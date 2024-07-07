@@ -1,7 +1,10 @@
-const express=require('express');
-const router=express.Router();
-const authMiddleware=require("../middleware");
-const {User,Accounts}= require('../db');
+const express = require('express');
+const { authMiddleware } = require('../middleware');
+const { Accounts } = require('../db');
+const { default: mongoose } = require('mongoose');
+
+const router = express.Router();
+
 
 
 
@@ -64,4 +67,4 @@ router.post('/transfer',authMiddleware,async(req,res)=>{
 
 
 
-module.exports={router};
+module.exports=router;
