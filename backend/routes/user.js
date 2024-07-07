@@ -17,6 +17,7 @@ const signupBody = zod.object({
 })
 
 router.post("/signup", async (req, res) => {
+
     const { success } = signupBody.safeParse(req.body)
     if (!success) {
         return res.status(411).json({
@@ -42,7 +43,7 @@ router.post("/signup", async (req, res) => {
     })
     const userId = user._id;
 
-    await Account.create({
+    await Accounts.create({
         userId,
         balance: 1 + Math.random() * 10000
     })
