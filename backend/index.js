@@ -10,7 +10,7 @@ const rootRouter=require('./routes/index');
 
 app.use(cors());
 app.use(express.json());
-app.use(authMiddleware);
+
 
 
 app.use('/api/v1',rootRouter);
