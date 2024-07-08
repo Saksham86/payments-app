@@ -19,6 +19,7 @@ const signupBody = zod.object({
 router.post("/signup", async (req, res) => {
 
     const { success } = signupBody.safeParse(req.body)
+    console.log("herer")
     if (!success) {
         return res.status(411).json({
             message: "Email already taken / Incorrect inputs"
@@ -64,6 +65,7 @@ const signinBody = zod.object({
 })
 
 router.post("/signin", async (req, res) => {
+    console.log("Sign in page hit")
     const { success } = signinBody.safeParse(req.body)
     if (!success) {
         return res.status(411).json({
