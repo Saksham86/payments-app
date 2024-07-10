@@ -6,9 +6,6 @@ const { default: mongoose } = require('mongoose');
 const router = express.Router();
 
 
-
-
-
 router.get('/balance',authMiddleware, async (req,res)=>{
 
     const account=await Accounts.findOne({userId:req.userId});
@@ -18,8 +15,6 @@ router.get('/balance',authMiddleware, async (req,res)=>{
     res.json({
         balance:account.balance,
         user:user
-        
-
     })
 
 

@@ -5,17 +5,31 @@ import { useNavigate } from "react-router-dom";
 import {Button} from "../components/Button";
 import { SubHeading } from "../components/SubHeading";
 import axios from 'axios';
+import { Users } from "../components/Users";
+import { Appbar } from "../components/Appbar";
 
 
 
 export const Dashboard=  ()=>{
 
-    const [user,setUser]=useState({});
+    const [user,setUser]=useState({});  
     const [balance,setBalance]=useState(0);
+    const [userList,setUserList] =useState([]);
+    const [searchInput,setSearchInput]=useState("");
+    const [ isLoading, setIsLoading ] = useState(true)
+   
+   
+
+
+
+    const navigate = useNavigate();
+    
+
+
 
 
     
-    useMemo(async ()=>{
+     useMemo(async ()=>{
         const token=localStorage.getItem("token");
         const response= await axios.get('http://localhost:3000/api/v1/account/balance', {
         headers: {
@@ -24,40 +38,53 @@ export const Dashboard=  ()=>{
        })
        setUser(response.data.user);
        setBalance(response.data.balance);
-       
+       console.log(response)
 
     },[])
-       
-    
-    
-    
 
+    
+     useMemo (async()=>{
+        const response=await axios.get("http://localhost:3000/api/v1/user/bulk",{
+            params:{
+                filter:searchInput
+            }
+
+        })
+        
+        setUserList(response.data.user);
+        setIsLoading(false);
+
+        
+
+    },[searchInput]);
+
+    if(isLoading){
+        return <div></div>
+    }
 
     return (
-        <div className="bg-slate-200 h-screen">
-            <div className=" w-full flex justify-between pl-3 items-baseline">
-                <div className="">
-                <Heading label={"Payments APP"} />
+        <div className=" h-screen">
+            <div className="mx-6">
+
+                <Appbar user={user} />
+
+
+                <div className="font-bold text-2xl">
+                    Your Balance ${balance.toFixed(2)}
+                </div>
+                <div className="w-full flex">
+                    
+                    <input placeholder=" Search for Users" className="w-full pl-4 bg-slate-200 border-white mx-2 h-8 my-4 rounded-md focus:outline-none " onChange={(e)=>{
+
+                        setTimeout(()=>{
+                            setSearchInput(e.target.value);
+                        },1000)
+
+                    }} />
 
                 </div>
-                
-                <div className="flex items-center">
-                    <div className="  mx-10  ">
-                        Hello, {user.firstName || null} {user.lastName}
-                    </div>
-                    <div className="font-bold text-gray-700 rounded-full  bg-white flex items-center justify-center font-mono" >404
-                        
-                        
-                    </div>
-                </div>
+                <Users userList={userList} />
             </div>
-            <hr className=" h-1 my-8 mx-10 bg-gray-100 border-0 rounded md: dark:bg-gray-700" />
-
-
-
-
-
-
 
         </div>
     )
