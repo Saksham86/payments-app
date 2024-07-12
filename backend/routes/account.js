@@ -10,7 +10,6 @@ router.get('/balance',authMiddleware, async (req,res)=>{
 
     const account=await Accounts.findOne({userId:req.userId});
     const user= await User.findOne({_id:req.userId});
-    console.log('reached balance')
 
     res.json({
         balance:account.balance,
@@ -21,6 +20,8 @@ router.get('/balance',authMiddleware, async (req,res)=>{
 })
 
 router.post('/transfer',authMiddleware,async(req,res)=>{
+
+    console.log("reched transfer")
 
     const session= await mongoose.startSession();
 
@@ -62,7 +63,7 @@ router.post('/transfer',authMiddleware,async(req,res)=>{
 
     session.commitTransaction();
     res.json({
-        message:"transaction Successful"
+        success:true
     })
 })
 
